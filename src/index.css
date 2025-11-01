@@ -1,3 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global typography overrides */
+:root {
+  --heading-size: 48px;
+  --body-size: 16px;
+  --heading-weight: 700;
+  --body-weight: 400;
+}
+
+/* Headings across the site */
+h1, h2, h3, h4, h5, h6 {
+  font-size: var(--heading-size) !important;
+  font-weight: var(--heading-weight) !important;
+  line-height: 1.2 !important;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Use Raleway for main headings across the site */
+h1, h2 {
+  font-family: 'Raleway', sans-serif !important;
+}
+
+/* Default text elements */
+body, p, span, li, a, button, input, textarea, label, small {
+  font-size: var(--body-size) !important;
+  font-weight: var(--body-weight) !important;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Compact heading style for specified labels */
+.compact-heading {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  font-family: 'Raleway', sans-serif !important;
+}
+
+/* Raleway font family for large headings without changing size/weight */
+.heading-raleway {
+  font-family: 'Raleway', sans-serif !important;
+}
+
+/* Specific size for hero main heading */
+.hero-heading-4rem {
+  font-size: 4rem !important;
+}
+
+/* Infinite marquee animation for brand slider */
+@keyframes brand-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.brand-marquee {
+  animation: brand-marquee 24s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-marquee { animation: none; }
+}

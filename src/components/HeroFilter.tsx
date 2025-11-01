@@ -46,9 +46,18 @@ const HeroFilter: React.FC<Props> = ({ allProperties, onApply }) => {
   };
 
   return (
-    <section id="home" className="relative min-h-[360px] sm:min-h-[420px] md:min-h-[500px] flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url(https://images.pexels.com/photos/1470502/pexels-photo-1470502.jpeg?auto=compress&cs=tinysrgb&w=1920)' }}>
-      <div className="text-center text-white z-10 px-4 w-full sm:max-w-2xl md:max-w-5xl">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 md:mb-8">Find your home in Dubai</h1>
+    <section id="home" className="relative min-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-88px)] flex items-center justify-center overflow-hidden">
+      <video
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        src="/herovideo.webm"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+      <div className="absolute inset-0 bg-black/30 z-10" />
+      <div className="relative text-center text-white z-20 px-4 w-full sm:max-w-2xl md:max-w-5xl">
+        <h1 className="font-bold mb-6 md:mb-8 heading-raleway hero-heading-4rem">Where Modern Design <br /> Meets Comfort</h1>
         <div className="bg-white rounded-lg shadow-2xl p-3 sm:p-4 mx-auto w-[92%] sm:w-auto max-w-[700px]">
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             {/* Category */}
