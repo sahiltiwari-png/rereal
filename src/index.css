@@ -43,9 +43,40 @@ body, p, span, li, a, button, input, textarea, label, small {
   font-family: 'Raleway', sans-serif !important;
 }
 
-/* Specific size for hero main heading */
+/* Specific, responsive sizes for hero main heading */
 .hero-heading-4rem {
-  font-size: 4rem !important;
+  font-size: 3rem !important; /* base */
+  line-height: 1.1 !important;
+}
+@media (max-width: 640px) {
+  .hero-heading-4rem {
+    font-size: 1.75rem !important; /* ~28px on mobile */
+  }
+}
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-heading-4rem {
+    font-size: 2.5rem !important; /* tablet */
+  }
+}
+@media (min-width: 1025px) {
+  .hero-heading-4rem {
+    font-size: 4rem !important; /* large screens */
+  }
+}
+
+/* Responsive typography: scale down on smaller screens */
+@media (max-width: 640px) {
+  :root {
+    --heading-size: 22px;
+    --body-size: 14px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  :root {
+    --heading-size: 36px;
+    --body-size: 15px;
+  }
 }
 
 /* Infinite marquee animation for brand slider */
@@ -61,4 +92,13 @@ body, p, span, li, a, button, input, textarea, label, small {
 
 @media (prefers-reduced-motion: reduce) {
   .brand-marquee { animation: none; }
+}
+
+/* Utility: hide horizontal scrollbar across browsers */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }

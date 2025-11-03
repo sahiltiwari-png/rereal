@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import { MapPin, Home, Building2, Key, TrendingUp, Users, Award, Star, Phone, Mail, MessageSquare, ChevronRight, Bed, Bath, Maximize, DollarSign } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { MapPin, Home, Building2, Key, TrendingUp, Users, Award, Star, Phone, Mail, MessageSquare, ChevronRight, ChevronLeft, Bed, Bath, Maximize, DollarSign } from 'lucide-react';
 import Navbar from './components/Navbar';
 import HeroFilter from './components/HeroFilter';
 import BrandSlider from './components/BrandSlider';
 import Footer from './components/Footer';
 import LandmarkShowcase from './components/LandmarkShowcase';
+import PropertyDetails from './components/PropertyDetails';
 // Removed Supabase import; using local mock data instead
 
 interface Property {
@@ -33,6 +34,7 @@ interface Testimonial {
   name: string;
   rating: number;
   comment: string;
+  avatar_url: string;
 }
 
 function App() {
@@ -40,18 +42,76 @@ function App() {
   const [allProperties, setAllProperties] = useState<Property[]>([]);
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const carouselImages = [
+    '/view-modern-skyscrapers-shining-sunrise-lights-dubai-marina-dubai-uae-min.webp',
+    '/aerial-view-downtown-dubai-autumn-day-united-arab-emirates-min.webp',
+    '/panorama-pudong-business-reflection-sky-office-min.webp',
+    '/dubai-united-arab-emirates-november-11-view-dubai-marina-towers-dubai-united-arab-emirates-november-11-2014-dubai-marina-is-district-dubai-artificial-canal-city-min.webp',
+  ];
+  const [carouselIndex, setCarouselIndex] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     message: ''
   });
+  const offPlanRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll state for Off-Plan row (pauses on hover)
+  const autoScrollPaused = useRef(false);
+
+  useEffect(() => {
+    const el = offPlanRef.current;
+    if (!el) return;
+    let rafId = 0;
+    const speed = 0.6; // pixels per frame
+    const step = () => {
+      if (!autoScrollPaused.current) {
+        el.scrollLeft += speed;
+        const loopWidth = el.scrollWidth / 2; // width of first set (we duplicate cards)
+        if (loopWidth > 0 && el.scrollLeft >= loopWidth) {
+          el.scrollLeft -= loopWidth; // seamless wrap
+        }
+      }
+      rafId = requestAnimationFrame(step);
+    };
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  const scrollOffPlan = (dir: 'prev' | 'next') => {
+    const el = offPlanRef.current;
+    if (!el) return;
+    const amount = el.clientWidth * 0.8;
+    el.scrollBy({ left: dir === 'next' ? amount : -amount, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     fetchProperties();
     fetchNews();
     fetchTestimonials();
   }, []);
+
+  // If a property is selected, render the details page
+  if (selectedProperty) {
+    return (
+      <div className="bg-white">
+        <Navbar />
+        <PropertyDetails
+          property={{
+            id: selectedProperty.id,
+            title: selectedProperty.title,
+            location: selectedProperty.location,
+            price: selectedProperty.price,
+            image_url: selectedProperty.image_url,
+          }}
+          onClose={() => setSelectedProperty(null)}
+        />
+        <Footer />
+      </div>
+    );
+  }
 
   const fetchProperties = async () => {
     // Mock data to display properties without Supabase
@@ -64,7 +124,7 @@ function App() {
         bedrooms: 3,
         bathrooms: 3,
         area: 2200,
-        image_url: '/living-room-with-couch-chairs-mirror.jpg',
+        image_url: '/living-room-with-couch-chairs-mirror.webp',
         property_type: 'Apartment',
         featured: true,
       },
@@ -76,7 +136,7 @@ function App() {
         bedrooms: 5,
         bathrooms: 4,
         area: 5000,
-        image_url: '/luxury-living-room-interior.jpg',
+        image_url: '/luxury-living-room-interior-min.webp',
         property_type: 'Villa',
         featured: true,
       },
@@ -88,7 +148,7 @@ function App() {
         bedrooms: 2,
         bathrooms: 2,
         area: 1500,
-        image_url: '/3d-rendering-luxury-modern-living-room-with-leather-sofa-lamp-wood-decor-loft-style.jpg',
+        image_url: '/3d-rendering-luxury-modern-living-room-with-leather-sofa-lamp-wood-decor-loft-style-min.webp',
         property_type: 'Apartment',
         featured: false,
       },
@@ -100,7 +160,7 @@ function App() {
         bedrooms: 4,
         bathrooms: 3,
         area: 3500,
-        image_url: '/3d-rendering-modern-dining-room-living-room-with-luxury-decor.jpg',
+        image_url: '/3d-rendering-modern-dining-room-living-room-with-luxury-decor-min.webp',
         property_type: 'Penthouse',
         featured: false,
       },
@@ -112,7 +172,7 @@ function App() {
         bedrooms: 2,
         bathrooms: 2,
         area: 1400,
-        image_url: '/living-room-with-couch-table-lamp.jpg',
+        image_url: '/living-room-with-couch-table-lamp.webp',
         property_type: 'Apartment',
         featured: false,
       },
@@ -124,7 +184,7 @@ function App() {
         bedrooms: 4,
         bathrooms: 4,
         area: 4000,
-        image_url: '/3d-rendering-contemporary-modern-dining-room-living-room-with-luxury-decor.jpg',
+        image_url: '/3d-rendering-contemporary-modern-dining-room-living-room-with-luxury-decor-min.webp',
         property_type: 'Villa',
         featured: true,
       },
@@ -170,18 +230,21 @@ function App() {
         name: 'Aisha Khan',
         rating: 5,
         comment: 'Outstanding service from start to finish. The team at Trivara helped us find our dream home in Dubai Marina.',
+        avatar_url: 'https://randomuser.me/api/portraits/women/68.jpg',
       },
       {
         id: 'test-2',
         name: 'Michael Chen',
         rating: 5,
         comment: 'Professional and knowledgeable. Their property management services have been exceptional for my investments.',
+        avatar_url: 'https://randomuser.me/api/portraits/men/12.jpg',
       },
       {
         id: 'test-3',
         name: 'Fatima Al Mansoori',
         rating: 5,
         comment: 'Exceptional guidance throughout the entire buying process. Highly recommended!',
+        avatar_url: 'https://randomuser.me/api/portraits/women/43.jpg',
       },
     ];
     setTestimonials(data);
@@ -193,6 +256,9 @@ function App() {
     setFormData({ name: '', email: '', phone: '', message: '' });
     alert('Thank you for your message! We will contact you soon.');
   };
+
+  const nextSlide = () => setCarouselIndex((i) => (i + 1) % carouselImages.length);
+  const prevSlide = () => setCarouselIndex((i) => (i - 1 + carouselImages.length) % carouselImages.length);
 
   // Filtering handled in HeroFilter component via onApply callback
 
@@ -250,6 +316,144 @@ function App() {
         </div>
       </section>
 
+      {/* Off-Plan Properties (new section before Featured Projects) */}
+      <section className="py-12 bg-[#0d1f3c] text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            {/* Left copy block */}
+            <div className="bg-transparent">
+              <h2 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">Off-Plan<br />Properties</h2>
+              <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                Find the UAE’s most promising off-plan projects with a team that understands your goals. From smart payment plans to early investment advantages, we
+                connect you to opportunities that deliver real value.
+              </p>
+              <button className="bg-[#f6f0df] text-gray-900 px-5 py-2 rounded-md text-sm font-medium hover:bg-[#efe7d0] transition">View All</button>
+            </div>
+            {/* Right cards row */}
+            <div>
+              <div
+                ref={offPlanRef}
+                className="flex gap-6 overflow-x-auto no-scrollbar pb-2"
+                style={{ scrollBehavior: 'smooth' }}
+                onMouseEnter={() => { autoScrollPaused.current = true; }}
+                onMouseLeave={() => { autoScrollPaused.current = false; }}
+              >
+                {/* Card 1 */}
+                <div className="relative flex-none w-72 sm:w-80 snap-start cursor-pointer" onClick={() => setSelectedProperty({ id: 'off-1', title: 'Nad Al Sheba Gardens Phase 7', location: 'Nad Al Sheba', price: 4430000, bedrooms: 3, bathrooms: 3, area: 2100, image_url: '/aerial-view-downtown-dubai-autumn-day-united-arab-emirates-min.webp', property_type: 'Villa', featured: false })}>
+                  <div className="rounded-xl overflow-hidden shadow-md">
+                    <img src="/aerial-view-downtown-dubai-autumn-day-united-arab-emirates-min.webp" alt="Nad Al Sheba Gardens" className="w-full h-56 object-cover" loading="lazy" decoding="async" />
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="bg-[#f6f0df] text-gray-900 rounded-md p-3 shadow-sm">
+                        <div className="font-semibold text-sm">Nad Al Sheba Gardens Phase 7</div>
+                        <div className="flex items-center gap-2 text-xs text-gray-600 mt-1">
+                          <MapPin size={14} className="text-gray-700" />
+                          <span>Nad Al Sheba</span>
+                        </div>
+                        <div className="text-xs mt-2">AED 4,430,000</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Card 2 */}
+                <div className="relative flex-none w-72 sm:w-80 snap-start cursor-pointer" onClick={() => setSelectedProperty({ id: 'off-2', title: 'Skyvue Solair at Sobha Hartland 2', location: 'Sobha Hartland 2', price: 1280000, bedrooms: 2, bathrooms: 2, area: 1250, image_url: '/panorama-pudong-business-reflection-sky-office-min.webp', property_type: 'Apartment', featured: false })}>
+                  <div className="rounded-xl overflow-hidden shadow-md">
+                    <img src="/panorama-pudong-business-reflection-sky-office-min.webp" alt="Skyvue Solair at Sobha Hartland 2" className="w-full h-56 object-cover" loading="lazy" decoding="async" />
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="bg-[#f6f0df] text-gray-900 rounded-md p-3 shadow-sm">
+                        <div className="font-semibold text-sm">Skyvue Solair at Sobha Hartland 2</div>
+                        <div className="flex items-center gap-2 text-xs text-gray-600 mt-1">
+                          <MapPin size={14} className="text-gray-700" />
+                          <span>Sobha Hartland 2</span>
+                        </div>
+                        <div className="text-xs mt-2">AED 1,280,000</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Card 3 */}
+                <div className="relative flex-none w-72 sm:w-80 snap-start cursor-pointer" onClick={() => setSelectedProperty({ id: 'off-3', title: 'La Tilia At Villanova Phase 2', location: 'Dubailand', price: 2690000, bedrooms: 3, bathrooms: 3, area: 1800, image_url: '/aerial-view-city-against-sky-sunset-min.webp', property_type: 'Townhouse', featured: false })}>
+                  <div className="rounded-xl overflow-hidden shadow-md">
+                    <img src="/aerial-view-city-against-sky-sunset-min.webp" alt="La Tilia at Villanova" className="w-full h-56 object-cover" loading="lazy" decoding="async" />
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="bg-[#f6f0df] text-gray-900 rounded-md p-3 shadow-sm">
+                        <div className="font-semibold text-sm">La Tilia At Villanova Phase 2</div>
+                        <div className="flex items-center gap-2 text-xs text-gray-600 mt-1">
+                          <MapPin size={14} className="text-gray-700" />
+                          <span>Dubailand</span>
+                        </div>
+                        <div className="text-xs mt-2">AED 2,690,000</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Duplicate set for seamless infinite scroll */}
+                {/* Card 1 (dup) */}
+                <div className="relative flex-none w-72 sm:w-80 snap-start cursor-pointer" onClick={() => setSelectedProperty({ id: 'off-1b', title: 'Nad Al Sheba Gardens Phase 7', location: 'Nad Al Sheba', price: 4430000, bedrooms: 3, bathrooms: 3, area: 2100, image_url: '/aerial-view-downtown-dubai-autumn-day-united-arab-emirates-min.webp', property_type: 'Villa', featured: false })}>
+                  <div className="rounded-xl overflow-hidden shadow-md">
+                    <img src="/aerial-view-downtown-dubai-autumn-day-united-arab-emirates-min.webp" alt="Nad Al Sheba Gardens" className="w-full h-56 object-cover" loading="lazy" decoding="async" />
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="bg-[#f6f0df] text-gray-900 rounded-md p-3 shadow-sm">
+                        <div className="font-semibold text-sm">Nad Al Sheba Gardens Phase 7</div>
+                        <div className="flex items-center gap-2 text-xs text-gray-600 mt-1">
+                          <MapPin size={14} className="text-gray-700" />
+                          <span>Nad Al Sheba</span>
+                        </div>
+                        <div className="text-xs mt-2">AED 4,430,000</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Card 2 (dup) */}
+                <div className="relative flex-none w-72 sm:w-80 snap-start cursor-pointer" onClick={() => setSelectedProperty({ id: 'off-2b', title: 'Skyvue Solair at Sobha Hartland 2', location: 'Sobha Hartland 2', price: 1280000, bedrooms: 2, bathrooms: 2, area: 1250, image_url: '/panorama-pudong-business-reflection-sky-office-min.webp', property_type: 'Apartment', featured: false })}>
+                  <div className="rounded-xl overflow-hidden shadow-md">
+                    <img src="/panorama-pudong-business-reflection-sky-office-min.webp" alt="Skyvue Solair at Sobha Hartland 2" className="w-full h-56 object-cover" loading="lazy" decoding="async" />
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="bg-[#f6f0df] text-gray-900 rounded-md p-3 shadow-sm">
+                        <div className="font-semibold text-sm">Skyvue Solair at Sobha Hartland 2</div>
+                        <div className="flex items-center gap-2 text-xs text-gray-600 mt-1">
+                          <MapPin size={14} className="text-gray-700" />
+                          <span>Sobha Hartland 2</span>
+                        </div>
+                        <div className="text-xs mt-2">AED 1,280,000</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Card 3 (dup) */}
+                <div className="relative flex-none w-72 sm:w-80 snap-start cursor-pointer" onClick={() => setSelectedProperty({ id: 'off-3b', title: 'La Tilia At Villanova Phase 2', location: 'Dubailand', price: 2690000, bedrooms: 3, bathrooms: 3, area: 1800, image_url: '/aerial-view-city-against-sky-sunset-min.webp', property_type: 'Townhouse', featured: false })}>
+                  <div className="rounded-xl overflow-hidden shadow-md">
+                    <img src="/aerial-view-city-against-sky-sunset-min.webp" alt="La Tilia at Villanova" className="w-full h-56 object-cover" loading="lazy" decoding="async" />
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="bg-[#f6f0df] text-gray-900 rounded-md p-3 shadow-sm">
+                        <div className="font-semibold text-sm">La Tilia At Villanova Phase 2</div>
+                        <div className="flex items-center gap-2 text-xs text-gray-600 mt-1">
+                          <MapPin size={14} className="text-gray-700" />
+                          <span>Dubailand</span>
+                        </div>
+                        <div className="text-xs mt-2">AED 2,690,000</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Bottom controls */}
+              <div className="flex justify-between items-center mt-4 text-xs text-gray-300">
+                <button onClick={() => scrollOffPlan('prev')} className="flex items-center gap-2 hover:text-white transition">
+                  <ChevronLeft size={16} />
+                  <span>Previous</span>
+                </button>
+                <button onClick={() => scrollOffPlan('next')} className="flex items-center gap-2 hover:text-white transition">
+                  <span>Next</span>
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects section removed per request */}
+
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -265,7 +469,7 @@ function App() {
               </button>
             </div>
             <div className="flex justify-center">
-              <img src="/finestimage.jpg" alt="UAE’s Finest Branded Communities" className="rounded-lg shadow-xl w-full sm:max-w-lg lg:max-w-xl" />
+          <img src="/finestimage-min.webp" alt="UAE’s Finest Branded Communities" className="rounded-lg shadow-xl w-full sm:max-w-lg lg:max-w-xl" />
             </div>
           </div>
         </div>
@@ -317,7 +521,7 @@ function App() {
               <>
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition">
                   <div className="relative">
-                    <img src="https://source.unsplash.com/1200x800/?dubai,marina,apartments" alt="Dubai Marina Apartments" className="w-full h-56 object-cover" />
+            <img src="/view-modern-skyscrapers-shining-sunrise-lights-dubai-marina-dubai-uae-min.webp" alt="Dubai Marina Apartments" className="w-full h-56 object-cover" />
                   </div>
                   <div className="p-4">
                     <h3 className="font-bold text-xl mb-1 text-[#19233e] compact-heading">AED 2,500,000</h3>
@@ -344,7 +548,7 @@ function App() {
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition">
                   <div className="relative">
-                    <img src="https://source.unsplash.com/1200x800/?dubai,downtown,skyscrapers" alt="Dubai Downtown Skyscrapers" className="w-full h-56 object-cover" />
+            <img src="/aerial-view-downtown-dubai-autumn-day-united-arab-emirates-min.webp" alt="Dubai Downtown Skyscrapers" className="w-full h-56 object-cover" />
                   </div>
                   <div className="p-4">
                     <h3 className="font-bold text-xl mb-1 text-[#19233e] compact-heading">AED 4,200,000</h3>
@@ -371,7 +575,7 @@ function App() {
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition">
                   <div className="relative">
-                    <img src="https://source.unsplash.com/1200x800/?dubai,palm,villa" alt="Palm Jumeirah Villa" className="w-full h-56 object-cover" />
+            <img src="/aerial-view-city-against-sky-sunset-min.webp" alt="Palm Jumeirah Villa" className="w-full h-56 object-cover" />
                   </div>
                   <div className="p-4">
                     <h3 className="font-bold text-xl mb-1 text-[#19233e] compact-heading">AED 8,500,000</h3>
@@ -406,7 +610,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <img src="/dodo.jpg" alt="Property Management" className="rounded-lg" />
+              <img src="/dodo-min.webp" alt="Property Management" className="rounded-lg" />
             </div>
             <div className="text-white">
               <h2 className="text-3xl font-bold mb-4">Professional Property<br />Management for Your Dubai Investment</h2>
@@ -506,8 +710,15 @@ function App() {
             {testimonials.length > 0 ? (
               testimonials.map((testimonial) => (
                 <div key={testimonial.id} className="bg-white border border-gray-200 p-6 rounded-lg">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <img
+                      src={testimonial.avatar_url}
+                      alt={testimonial.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
                     <div>
                       <div className="font-semibold text-sm">{testimonial.name}</div>
                       <div className="flex">
@@ -574,7 +785,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <img src="/dodopr.jpg" alt="Dubai" className="rounded-lg" />
+            <img src="/dodopr-min.webp" alt="Dubai" className="rounded-lg" />
             </div>
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold mb-6 leading-tight">Continued Advice When it Comes to Real Estate in Dubai</h2>

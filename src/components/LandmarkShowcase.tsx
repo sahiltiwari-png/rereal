@@ -8,32 +8,32 @@ interface Panel {
 
 const panels: Panel[] = [
   {
-    src: '/buildings-city-against-sky.jpg',
+    src: '/buildings-city-against-sky-min.webp',
     title: 'Burj Khalifa',
     description: "World’s tallest tower with stunning views.",
   },
   {
-    src: '/dubai-frame-zabeel-park-dubai (2).jpg',
+    src: '/dubai-frame-zabeel-park-dubai-2.webp',
     title: 'Dubai Frame',
     description: 'Gateway between old and new Dubai.',
   },
   {
-    src: '/reflection-buildings-glass-window.jpg',
+    src: '/reflection-buildings-glass-window-min.webp',
     title: 'Museum of the Future',
     description: 'Iconic futuristic landmark.',
   },
   {
-    src: '/dubai-united-arab-emirates-november-11-view-dubai-marina-towers-dubai-united-arab-emirates-november-11-2014-dubai-marina-is-district-dubai-artificial-canal-city.jpg',
+    src: '/dubai-united-arab-emirates-november-11-view-dubai-marina-towers-dubai-united-arab-emirates-november-11-2014-dubai-marina-is-district-dubai-artificial-canal-city-min.webp',
     title: 'Dubai Marina',
     description: 'Waterfront living and glittering skyline.',
   },
   {
-    src: '/aerial-view-city-against-sky-sunset.jpg',
+    src: '/aerial-view-city-against-sky-sunset-min.webp',
     title: 'Sunset Over Downtown',
     description: 'Golden hour across the skyline.',
   },
   {
-    src: '/city-rotterdam-netherlands.jpg',
+    src: '/city-rotterdam-netherlands-min.webp',
     title: 'Coastal Cityscape',
     description: 'Modern architecture and waterways.',
   },

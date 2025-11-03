@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
           <div>
-            <img src="/applog.png" alt="Trivara" className="h-16 mb-3 sm:mb-4" />
+        <img src="/applog-min.webp" alt="Trivara" className="h-16 mb-3 sm:mb-4" />
             <p className="text-gray-400 text-xs leading-relaxed">Dubai's premier real estate marketplace connecting buyers, sellers, and investors.</p>
           </div>
           <div>

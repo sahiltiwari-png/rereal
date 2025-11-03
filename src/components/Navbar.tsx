@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
         <div className="flex justify-between items-center py-1 sm:py-2">
           <div className="flex items-center">
-            <img src="/navlogo.png" alt="Trivara" className="h-16 w-auto" />
+            <img src="/navlogo-min.webp" alt="Trivara" className="h-16 w-auto" />
           </div>
           <nav className="hidden md:flex flex-1 justify-center space-x-6 text-sm font-medium">
             <a href="#home" className="text-black hover:text-black">Home</a>
@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
           <div className="fixed inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
           <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-xl p-4">
             <div className="flex items-center justify-between mb-4">
-              <img src="/navlogo.png" alt="Trivara" className="h-16 w-auto" />
+              <img src="/navlogo-min.webp" alt="Trivara" className="h-16 w-auto" />
               <button aria-label="Close menu" className="p-2 rounded hover:bg-gray-100" onClick={() => setMobileOpen(false)}>
                 <X size={20} className="text-gray-700" />
               </button>
