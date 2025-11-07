@@ -6,7 +6,7 @@ import BrandSlider from './components/BrandSlider';
 import Footer from './components/Footer';
 import LandmarkShowcase from './components/LandmarkShowcase';
 import PropertyDetails from './components/PropertyDetails';
-// Removed Supabase import; using local mock data instead
+import ContactPage from './components/ContactPage';
 
 interface Property {
   id: string;
@@ -202,21 +202,21 @@ function App() {
         title: "Dubai Building Sector Sets Sales Record",
         excerpt: "The Dubai real estate market continues to show remarkable growth with record-breaking sales...",
         image_url: 'https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=600',
-        published_at: '2024-03-05',
+        published_at: '2025-03-05',
       },
       {
         id: 'news-2',
         title: "New Developments Announced in Prime Locations",
         excerpt: "Major developers announce exciting new projects in prime Dubai locations...",
         image_url: 'https://images.pexels.com/photos/1370704/pexels-photo-1370704.jpeg?auto=compress&cs=tinysrgb&w=600',
-        published_at: '2024-03-12',
+        published_at: '2025-03-12',
       },
       {
         id: 'news-3',
-        title: "Market Outlook: Trends for Q2 2024",
+        title: "Market Outlook: Trends for Q2 2025",
         excerpt: "Analysts forecast continued strength across residential and off-plan segments...",
         image_url: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=600',
-        published_at: '2024-04-01',
+        published_at: '2025-04-01',
       },
     ];
     setNews(data);
@@ -833,93 +833,7 @@ function App() {
         </div>
       </section>
 
-      <section id="contact" className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Speak with our Real Estate pecialists today</h2>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                Our expert team is ready to help you find your perfect property or answer any questions about Dubai's real estate market.
-              </p>
-              <div className="space-y-5">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#f9f5ea] rounded flex items-center justify-center flex-shrink-0">
-                    <Phone className="text-[#19233e]" size={20} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-sm compact-heading">Call-Us</h3>
-                    <p className="text-gray-600 text-sm">+971 4 123 4567</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#f9f5ea] rounded flex items-center justify-center flex-shrink-0">
-                    <Mail className="text-[#19233e]" size={20} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-sm compact-heading">Email us</h3>
-                    <p className="text-gray-600 text-sm">info@trivara.ae</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#f9f5ea] rounded flex items-center justify-center flex-shrink-0">
-                    <MessageSquare className="text-[#19233e]" size={20} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-sm compact-heading">Live chat</h3>
-                    <p className="text-gray-600 text-sm">Available 24/7</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <form onSubmit={handleSubmit} className="bg-white border border-gray-200 p-8 rounded-lg">
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    placeholder="Full name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-[#19233e] text-sm"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <input
-                    type="email"
-                    placeholder="Email address"
-                    className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-[#19233e] text-sm"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <input
-                    type="tel"
-                    placeholder="Phone number"
-                    className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-[#19233e] text-sm"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  />
-                </div>
-                <div className="mb-4">
-                  <textarea
-                    placeholder="Message"
-                    rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-[#19233e] text-sm"
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" className="w-full bg-[#19233e] text-white px-6 py-3 rounded hover:bg-[#0f172a] transition text-sm font-medium">
-                  Send Enquiry
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Contact section moved to dedicated /contact page via routing */}
 
       <Footer />
     </div>

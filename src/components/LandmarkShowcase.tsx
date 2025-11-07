@@ -85,7 +85,7 @@ export default function LandmarkShowcase() {
                 {/* Caption */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
                   <div className={`bg-black/40 backdrop-blur-sm rounded-md p-3 sm:p-4 transition-opacity ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-                    <h3 className="text-[30px] font-bold tracking-wide">{panel.title}</h3>
+                    <h3 className="!text-[30px] font-bold tracking-wide">{panel.title}</h3>
                     <p className="text-gray-200 text-base font-normal mt-1">{panel.description}</p>
                   </div>
                 </div>

@@ -79,6 +79,11 @@ body, p, span, li, a, button, input, textarea, label, small {
   }
 }
 
+/* Page-scoped typography overrides: Terms page uses tighter sizes */
+.terms-page {
+  --body-size: 14px;
+}
+
 /* Infinite marquee animation for brand slider */
 @keyframes brand-marquee {
   0% { transform: translateX(0); }

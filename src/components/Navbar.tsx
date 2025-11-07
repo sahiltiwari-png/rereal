@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const Navbar: React.FC = () => {
@@ -15,10 +16,10 @@ const Navbar: React.FC = () => {
             <a href="#properties" className="text-black hover:text-black">Buy</a>
             <a href="#properties" className="text-black hover:text-black">Rent</a>
             <a href="#properties" className="text-black hover:text-black">Properties</a>
-            <a href="#about" className="text-black hover:text-black">About</a>
+            <Link to="/about" className="text-black hover:text-black">About</Link>
           </nav>
           <div className="hidden sm:flex items-center space-x-3 sm:space-x-4">
-            <a href="#contact" className="text-sm bg-[#19233e] text-white px-3 sm:px-4 py-2 rounded">Contact</a>
+            <Link to="/contact" className="text-sm bg-[#19233e] text-white px-3 sm:px-4 py-2 rounded">Contact</Link>
           </div>
           {/* Mobile hamburger button */}
           <div className="md:hidden">
@@ -43,8 +44,8 @@ const Navbar: React.FC = () => {
               <a href="#properties" className="text-black hover:text-black font-medium" onClick={() => setMobileOpen(false)}>Buy</a>
               <a href="#properties" className="text-black hover:text-black font-medium" onClick={() => setMobileOpen(false)}>Rent</a>
               <a href="#properties" className="text-black hover:text-black font-medium" onClick={() => setMobileOpen(false)}>Properties</a>
-              <a href="#about" className="text-black hover:text-black font-medium" onClick={() => setMobileOpen(false)}>About</a>
-              <a href="#contact" className="text-black hover:text-black font-medium" onClick={() => setMobileOpen(false)}>Contact</a>
+              <Link to="/about" className="text-black hover:text-black font-medium" onClick={() => setMobileOpen(false)}>About</Link>
+              <Link to="/contact" className="text-black hover:text-black font-medium" onClick={() => setMobileOpen(false)}>Contact</Link>
             </nav>
           </div>
         </div>

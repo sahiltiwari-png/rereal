@@ -73,7 +73,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ property, onClose }) 
           <button className="px-4 py-2 bg-[#19233e] text-white rounded text-sm">Schedule Viewing</button>
           <button className="px-4 py-2 border rounded text-sm">Download Brochure</button>
           <div className="ml-auto flex items-center gap-3">
-            <a href="tel:+9710000000" className="w-9 h-9 rounded-full bg-[#19233e] text-white flex items-center justify-center" aria-label="Call">
+            <a href="tel:+971506040777" className="w-9 h-9 rounded-full bg-[#19233e] text-white flex items-center justify-center" aria-label="Call">
               <Phone size={18} />
             </a>
             <a href="#" className="w-9 h-9 rounded-full bg-green-500 text-white flex items-center justify-center" aria-label="WhatsApp">
