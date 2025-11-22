@@ -1,7 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+/* Import heading and body fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Gentle bounce animation for subtle hover effect */
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover\:animate-[gentle-bounce_220ms_ease-out_1]:hover { animation: none !important; }
+}
 
 /* Global typography overrides */
 :root {
@@ -11,36 +22,36 @@
   --body-weight: 400;
 }
 
-/* Headings across the site */
+/* Headings across the site: use Inter */
 h1, h2, h3, h4, h5, h6 {
   font-size: var(--heading-size) !important;
   font-weight: var(--heading-weight) !important;
   line-height: 1.2 !important;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
 
-/* Use Raleway for main headings across the site */
+/* Keep larger headings (h1,h2) explicitly Inter as well */
 h1, h2 {
-  font-family: 'Raleway', sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
-/* Default text elements */
+/* Default text elements: use Lato */
 body, p, span, li, a, button, input, textarea, label, small {
   font-size: var(--body-size) !important;
   font-weight: var(--body-weight) !important;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Compact heading style for specified labels */
 .compact-heading {
   font-size: 18px !important;
   font-weight: 700 !important;
-  font-family: 'Raleway', sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
-/* Raleway font family for large headings without changing size/weight */
+/* Heading utility previously named heading-raleway — now Inter */
 .heading-raleway {
-  font-family: 'Raleway', sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
 /* Specific, responsive sizes for hero main heading */
@@ -107,3 +118,131 @@ body, p, span, li, a, button, input, textarea, label, small {
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
+
+/* Theme-specific select/option styling
+   Aim: override the default OS/browser blue highlight in select dropdowns
+   to use the site's theme blue (#19233e) while keeping other styles intact.
+   Note: styling native <option> is limited across browsers, but Chromium
+   and modern browsers respect background-color/color on option:hover and option:checked.
+*/
+select {
+  /* keep native look but ensure consistent focus ring */
+  outline-color: transparent;
+}
+
+select:focus {
+  outline: 2px solid rgba(25,35,62,0.08);
+  outline-offset: 2px;
+}
+
+/* Option hover / selected uses theme blue */
+/* Ensure all option states use the same theme blue and white text so there's
+   only one highlight color across browsers (hover, selected, active, focus).
+   Note: some browsers limit styling of native <option>, but modern Chromium
+   and Firefox respect these rules.
+*/
+select option,
+select option:hover,
+select option:active,
+select option:focus,
+select option:checked,
+select optgroup {
+  background-color: #19233e !important; /* theme blue */
+  color: #ffffff !important;
+}
+
+/* Hide the default dropdown arrow for IE/Edge if necessary (no visual change)
+   and keep the native expand for other browsers.
+*/
+select::-ms-expand {
+  display: none;
+}
+
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@layer base {
+  :root {
+    --background: 210 25% 98%;
+    --foreground: 215 30% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 30% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 30% 12%;
+    --primary: 215 100% 10%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 215 100% 15%;
+    --secondary: 215 25% 95%;
+    --secondary-foreground: 215 30% 12%;
+    --muted: 210 25% 96%;
+    --muted-foreground: 215 20% 50%;
+    --accent: 215 90% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 85% 62%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 20% 90%;
+    --input: 215 20% 90%;
+    --ring: 215 100% 10%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --radius: 0.75rem;
+    --sidebar-background: 215 100% 10%;
+    --sidebar-foreground: 215 20% 90%;
+    --sidebar-primary: 215 90% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 95% 15%;
+    --sidebar-accent-foreground: 215 20% 95%;
+    --sidebar-border: 215 95% 12%;
+    --sidebar-ring: 215 90% 60%;
+  }
+
+  .dark {
+    --background: 215 30% 8%;
+    --foreground: 210 20% 95%;
+    --card: 215 25% 12%;
+    --card-foreground: 210 20% 95%;
+    --popover: 215 25% 12%;
+    --popover-foreground: 210 20% 95%;
+    --primary: 215 85% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 215 20% 18%;
+    --secondary-foreground: 210 20% 95%;
+    --muted: 215 20% 18%;
+    --muted-foreground: 215 15% 65%;
+    --accent: 215 85% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 20% 20%;
+    --input: 215 20% 20%;
+    --ring: 215 85% 55%;
+    --sidebar-background: 215 100% 10%;
+    --sidebar-foreground: 215 20% 85%;
+    --sidebar-primary: 215 85% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 90% 15%;
+    --sidebar-accent-foreground: 215 20% 95%;
+    --sidebar-border: 215 90% 12%;
+    --sidebar-ring: 215 85% 55%;
+  }
+}
+
+@layer base {
+  * { border-color: hsl(var(--border)); }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+  }
+}
+
+#admin-root { max-width: 1280px; margin: 0 auto; padding: 2rem; text-align: center; }
+#admin-root .logo { height: 6em; padding: 1.5em; will-change: filter; transition: filter 300ms; }
+#admin-root .logo:hover { filter: drop-shadow(0 0 2em #646cffaa); }
+#admin-root .logo.react:hover { filter: drop-shadow(0 0 2em #61dafbaa); }
+@media (prefers-reduced-motion: no-preference) { #admin-root a:nth-of-type(2) .logo { animation: logo-spin infinite 20s linear; } }
+#admin-root .card { padding: 2em; }
+#admin-root .read-the-docs { color: #888; }

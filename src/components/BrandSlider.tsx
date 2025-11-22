@@ -17,7 +17,13 @@ const BrandSlider: React.FC = () => {
           <div className="brand-marquee flex items-center gap-6 md:gap-8 w-max">
             {loop.map((brand, idx) => (
               <div key={idx} className="flex-none bg-gray-50 rounded-lg h-24 md:h-28 w-36 md:w-40 flex items-center justify-center shadow-sm">
-                <img src={brand.src} alt={brand.alt} className="h-10 md:h-12 object-contain" />
+      <img
+        src={brand.src}
+        alt={brand.alt}
+        className="h-10 md:h-12 object-contain"
+        loading="lazy"
+        decoding="async"
+      />
               </div>
             ))}
           </div>

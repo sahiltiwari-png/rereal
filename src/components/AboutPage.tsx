@@ -1,5 +1,5 @@
-import React from 'react';
-import { ChevronDown, Plus, Quote } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronDown, Plus, Minus, Quote } from 'lucide-react';
 
 // Brand colors used across the app
 const brand = {
@@ -9,6 +9,24 @@ const brand = {
 };
 
 export default function AboutPage() {
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const items = [
+    {
+      key: 'Customer Experience',
+      content:
+        'Delivering seamless, personalized customer experiences that build trust and drive lasting relationships in real estate',
+    },
+    {
+      key: '360° Solutions',
+      content:
+        'Comprehensive 360° real estate solutions that simplify decisions and maximize value.',
+    },
+    {
+      key: 'Strategic Marketing',
+      content:
+        'Smart marketing strategies paired with compelling content to attract, engage, and convert real estate clients',
+    },
+  ];
   return (
     <main className="bg-white">
       {/* Hero: Why Choose Trivara? */}
@@ -41,33 +59,52 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="rounded-xl border border-gray-200">
-              {[
-                'Customer Experience',
-                '360° Solutions',
-                'Strategic Marketing',
-              ].map((label, idx) => (
-                <div key={label} className="flex items-center justify-between px-4 py-3 border-b last:border-b-0">
-                  <span className="text-sm font-medium text-gray-900">{label}</span>
-                  <Plus size={18} className="text-gray-500" />
-                </div>
-              ))}
+              {items.map((item, idx) => {
+                const isOpen = openKey === item.key;
+                const isLast = idx === items.length - 1;
+                return (
+                  <div key={item.key} className={`border-b ${isLast ? 'last:border-b-0' : ''}`}>
+                    <button
+                      type="button"
+                      className="w-full flex items-center justify-between px-4 py-3"
+                      onClick={() => setOpenKey(isOpen ? null : item.key)}
+                      aria-expanded={isOpen}
+                      aria-controls={`about-accordion-${idx}`}
+                    >
+                      <span className="text-sm font-medium text-gray-900">{item.key}</span>
+                      {isOpen ? (
+                        <Minus size={18} className="text-gray-500" />
+                      ) : (
+                        <Plus size={18} className="text-gray-500" />
+                      )}
+                    </button>
+                    {isOpen && (
+                      <div id={`about-accordion-${idx}`} className="px-4 pb-4 -mt-1">
+                        <p className="text-sm text-gray-700 leading-relaxed">{item.content}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
 
       {/* Journey section with media left, text right */}
-      <section className="bg-white">
+      <section className="bg-white overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex gap-0">
-              <img src="/assets/smilywomen.webp" alt="Team" className="w-1/2 h-56 sm:h-64 object-contain bg-white" loading="lazy" />
-              <img src="/assets/smilymen.webp" alt="Discussion" className="w-1/2 h-56 sm:h-64 object-contain bg-white" loading="lazy" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[200px] items-stretch">
+            <div className="rounded-xl overflow-hidden border border-gray-200 md:max-w-xs w-full mx-auto h-full" data-aos="fade-right" data-aos-duration="800" data-aos-delay="0">
+              <img src="/assets/smilywomen.webp" alt="Team" className="w-full h-full object-cover" loading="lazy" />
             </div>
-            <div className="rounded-xl bg-[#0a1628] text-white p-5 sm:p-6">
-              <h3 className="text-xs sm:text-sm font-semibold">Focused on the Journey, Driven by Purpose</h3>
-              <p className="mt-2 text-sm text-gray-300 leading-relaxed">
-                Real estate is more than transactions — it’s about clarity, trust, and results. We listen, plan, and execute with intention, so every step feels informed and effortless.
+            <div className="rounded-xl bg-[#0a1628] text-white px-6 py-5 h-full" data-aos="fade-left" data-aos-duration="800" data-aos-delay="400">
+              <h3 className="text-lg font-semibold mb-3">Focused on the Journey, Driven by Purpose</h3>
+              <p className="text-base text-gray-300">
+                Real estate is more than transactions — it's about clarity, trust, and results. We listen, plan, and execute with intention, so every step feels informed and effortless.
+                <br />
+                To elevate every client experience through smart strategy and dedicated support.
+                <br />We’re a team that values clarity and partnership. With Trivara, you’ll find careful planning, honest advice, and a commitment to long-term success. Let’s build something great — step by step, and together.
               </p>
             </div>
           </div>
@@ -121,8 +158,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Management Team */}
-      <section className="bg-[#0a1628] text-white">
+      {/* Management Team (removed per request) */}
+      {/* <section className="bg-[#0a1628] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg sm:text-xl font-semibold">Our Management Team</h3>
@@ -144,7 +181,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Our People strip */}
       <section className="bg-white">
@@ -158,7 +195,7 @@ export default function AboutPage() {
               '/panorama-pudong-business-reflection-sky-office-min.webp',
             ].map((src) => (
               <div key={src} className="rounded-lg overflow-hidden border border-gray-200">
-                <img src={src} alt="Gallery" className="w-full h-24 sm:h-28 object-cover" loading="lazy" />
+                <img src={src} alt="Gallery" className="w-full h-40 sm:h-56 md:h-64 object-cover" loading="lazy" />
               </div>
             ))}
           </div>

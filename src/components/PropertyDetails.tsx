@@ -1,5 +1,8 @@
 import { MapPin, Share2, Phone, MessageSquare, ChevronRight } from 'lucide-react';
+import ReactImageMagnify from 'react-image-magnify';
 import React, { useEffect } from 'react';
+import Footer from './Footer';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface PropertyDetailsProps {
   property: {
@@ -56,10 +59,28 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ property, onClose }) 
           </div>
         </div>
 
-        {/* Gallery */}
+        {/* Gallery with Magnify */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2">
-            <img src={gallery[0]} alt="Property" className="w-full h-64 md:h-96 object-cover rounded-lg" loading="lazy" decoding="async" />
+            <div className="rounded-lg overflow-hidden bg-gray-100">
+              <ReactImageMagnify
+                {...{
+                  smallImage: {
+                    alt: 'Property',
+                    isFluidWidth: true,
+                    src: gallery[0],
+                  },
+                  largeImage: {
+                    src: gallery[0],
+                    width: 1200,
+                    height: 800,
+                  },
+                  lensStyle: { backgroundColor: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.35)' },
+                  shouldUsePositiveSpaceLens: true,
+                  enlargedImagePosition: 'over',
+                }}
+              />
+            </div>
           </div>
           <div className="grid grid-cols-3 md:grid-cols-1 md:auto-rows-[1fr] gap-3">
             {gallery.slice(1).map((src, i) => (
@@ -103,20 +124,71 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ property, onClose }) 
             </div>
             <button className="text-xs flex items-center gap-1 text-[#19233e]">View All <ChevronRight size={14} /></button>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
             <div className="sm:col-span-1">
-              <div className="text-xs text-gray-500 mb-1">Model</div>
-              <div className="font-semibold">1 Bedroom</div>
-              <button className="mt-2 px-3 py-1.5 border rounded text-xs">Download Floor Plan</button>
+              <div className="text-xs text-gray-500">Model</div>
+              <div className="text-lg font-semibold mt-1">1 Bedroom</div>
+              <div className="mt-3 space-y-1 text-sm text-gray-700">
+                <div>Area: 820 – 1450 sqft</div>
+                <div>Layout: Open-plan living, balcony</div>
+                <div>Finish: Premium fixtures and fittings</div>
+              </div>
+              <div className="mt-4 space-x-2">
+                <button className="px-3 py-1.5 border rounded text-xs">Download Floor Plan</button>
+                <button className="px-3 py-1.5 bg-[#19233e] text-white rounded text-xs">Book Viewing</button>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                <div className="rounded border p-2">
+                  <div className="text-gray-500">Est. ROI</div>
+                  <div className="font-semibold text-[#19233e]">6.5%</div>
+                </div>
+                <div className="rounded border p-2">
+                  <div className="text-gray-500">Service Fee</div>
+                  <div className="font-semibold text-[#19233e]">AED 18/sqft</div>
+                </div>
+              </div>
+              <div className="mt-4">
+                <div className="text-xs text-gray-500 mb-1">Key Highlights</div>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>Floor-to-ceiling windows</li>
+                  <li>Built-in wardrobes</li>
+                  <li>Smart home controls</li>
+                </ul>
+              </div>
+              <div className="mt-4">
+                <div className="text-xs text-gray-500 mb-1">Amenities</div>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 text-xs rounded bg-gray-100 border">Pool</span>
+                  <span className="px-2 py-1 text-xs rounded bg-gray-100 border">Gym</span>
+                  <span className="px-2 py-1 text-xs rounded bg-gray-100 border">Covered Parking</span>
+                </div>
+              </div>
             </div>
-            <img src="/luxury-living-room-interior-min.webp" alt="Floor plan" className="sm:col-span-2 w-full h-48 sm:h-56 object-cover rounded-lg" loading="lazy" decoding="async" />
+            <div className="sm:col-span-2 rounded-lg overflow-hidden bg-gray-100">
+              <ReactImageMagnify
+                {...{
+                  smallImage: {
+                    alt: 'Floor plan',
+                    isFluidWidth: true,
+                    src: '/luxury-living-room-interior-min.webp',
+                  },
+                  largeImage: {
+                    src: '/luxury-living-room-interior-min.webp',
+                    width: 1200,
+                    height: 800,
+                  },
+                  lensStyle: { backgroundColor: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.35)' },
+                  shouldUsePositiveSpaceLens: true,
+                  enlargedImagePosition: 'over',
+                }}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Location */}
         <div className="mt-6 bg-white rounded-lg p-4 md:p-6 border">
           <h3 className="font-semibold mb-3">Location</h3>
-          <img src="/city-rotterdam-netherlands-min.webp" alt="Map" className="w-full h-64 object-cover rounded-lg" loading="lazy" decoding="async" />
+          <img src="/city-rotterdam-netherlands-min.webp" alt="Map" className="w-full h-96 md:h-[28rem] object-cover rounded-lg" loading="lazy" decoding="async" />
           <div className="mt-3 text-xs text-gray-600">Nearest Metro: Dubai Marina • 5 min</div>
         </div>
 
@@ -147,39 +219,33 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ property, onClose }) 
           ))}
         </div>
 
-        {/* Contact Agent */}
-        <div className="mt-6 bg-white rounded-lg p-4 md:p-6 border">
-          <h3 className="font-semibold mb-3">Contact Agent</h3>
-          <form className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <input className="border rounded px-3 py-2 text-sm" placeholder="Name" />
-            <input className="border rounded px-3 py-2 text-sm" placeholder="Email" />
-            <input className="border rounded px-3 py-2 text-sm" placeholder="Phone" />
-            <textarea className="md:col-span-3 border rounded px-3 py-2 text-sm" placeholder="Message" rows={4}></textarea>
-            <div className="md:col-span-3 flex justify-end">
-              <button type="button" className="px-4 py-2 bg-[#19233e] text-white rounded text-sm">Send Inquiry</button>
-            </div>
-          </form>
-        </div>
+        
 
         {/* Related Properties */}
         <div className="mt-6">
           <h3 className="font-semibold mb-3">Related Properties</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
-              { title: 'Al Habtoor City – Canal View', img: '/aerial-view-city-against-sky-sunset-min.webp' },
-              { title: 'Marina Vista – Beachfront', img: '/aerial-view-downtown-dubai-autumn-day-united-arab-emirates-min.webp' },
+              { title: 'Al Habtoor City – Canal View', img: '/aerial-view-city-against-sky-sunset-min.webp', price: 2495000, location: 'Business Bay' },
+              { title: 'Marina Vista – Beachfront', img: '/aerial-view-downtown-dubai-autumn-day-united-arab-emirates-min.webp', price: 2495000, location: 'Dubai Marina' },
             ].map((item) => (
-              <div key={item.title} className="bg-white border rounded-lg overflow-hidden">
-                <img src={item.img} alt={item.title} className="w-full h-36 object-cover" loading="lazy" decoding="async" />
-                <div className="p-3">
-                  <div className="compact-heading text-[#19233e]">{item.title}</div>
-                  <div className="text-xs text-gray-600 mt-1">AED 2,495,000</div>
+              <Card key={item.title} className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border bg-white">
+                <div className="relative h-44 w-full overflow-hidden">
+                  <img src={item.img} alt={item.title} className="h-full w-full object-cover" loading="lazy" decoding="async" />
                 </div>
-              </div>
+                <CardContent className="p-4">
+                  <div className="text-xl font-bold mb-2 text-gray-900">AED {item.price.toLocaleString()}</div>
+                  <div className="text-lg font-semibold text-gray-800 mb-1">{item.title}</div>
+                  <div className="flex items-center gap-2 text-gray-600 text-sm">
+                    <MapPin className="h-4 w-4" /> {item.location}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
